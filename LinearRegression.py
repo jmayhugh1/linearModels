@@ -59,8 +59,8 @@ class LinearRegression:
             self.weights -= self.lr * dw
             self.bias -= self.lr * db
             
-            if i % 100 == 0:  # Print every 100 iterations
-                print(f"Iteration {i}: Weights: {self.weights}, Bias: {self.bias}, dw: {dw}, db: {db}")
+            # if i % 100 == 0:  # Print every 100 iterations
+            #     print(f"Iteration {i}: Weights: {self.weights}, Bias: {self.bias}, dw: {dw}, db: {db}")
 
     def RSS(self, y, y_predicted):
             return np.sum((y - y_predicted) ** 2)
