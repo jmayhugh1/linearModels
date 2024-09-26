@@ -1,13 +1,18 @@
 import numpy as np  
 class LogisticRegression:
-    def __init__(self, lr = 0.001, n_iter = 1000) -> None:
+    def __init__(self, lr = 0.001, n_iter = 10000) -> None:
         self.lr = lr
         self.n_iter = n_iter
         self.weights = None
         self.bias = None
 
+    '''
+    The sigmoid function is used to map the output of the linear model to a value between 0 and 1.
+    '''
     def sigmoid(self, z):
         return 1 / (1 + np.exp(-z)) 
+    
+
     def fit(self, X,y):
         if not np.all(np.isin(y, [0, 1])):
             print("Array contains elements other than 0 or 1.")

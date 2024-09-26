@@ -21,7 +21,7 @@ def k_fold_cross_validation(X, y, k=5):
     precision_list = []
     recall_list = []
     f1_list = []
-
+    iteration = 1
     # Perform cross-validation
     for train_index, test_index in kf.split(X):
         X_train, X_test = X[train_index], X[test_index]
@@ -44,7 +44,8 @@ def k_fold_cross_validation(X, y, k=5):
         precision_list.append(precision)
         recall_list.append(recall)
         f1_list.append(f1)
-
+        print(f"Iteration {iteration}: Accuracy: {accuracy:.4f}, Precision: {precision:.4f}, Recall: {recall:.4f}, F1 Score: {f1:.4f}")
+        iteration += 1
     # Report the average and standard deviation for each metric
     print(f"Accuracy: Mean = {np.mean(accuracy_list):.4f}, Std = {np.std(accuracy_list):.4f}")
     print(f"Precision: Mean = {np.mean(precision_list):.4f}, Std = {np.std(precision_list):.4f}")
@@ -69,12 +70,14 @@ def k_fold_cross_validation_RMSE(X, y, k=5):
         
         # Fit the model
         model.fit(X_train, y_train)
+        ## what are the weights of the model
+        print(f"Weights: {model.weights}, Bias: {model.bias}")
         y_pred = model.predict(X_test)
         
         # Calculate RMSE
         rmse = np.sqrt(np.mean((y_test - y_pred) ** 2))
         rmse_list.append(rmse)
-        
+        print(f"RMSE: {rmse:.4f}")
         # Sum absolute values of weights (coefficients)
         feature_importance += np.abs(model.weights)
     
@@ -88,6 +91,5 @@ def k_fold_cross_validation_RMSE(X, y, k=5):
     feature_ranking = np.argsort(-feature_importance)  # Sort in descending order
     #print(f"Most informative features (by importance): {feature_ranking}")
     # most important feature
-    names = X.columns
-    for i in range(5):  
-        print(f"{names[feature_ranking[i]]}: {feature_importance[feature_ranking[i]]:.4f}")
+   
+    return feature_ranking

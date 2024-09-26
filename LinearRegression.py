@@ -9,6 +9,9 @@ class LinearRegression:
        self.weights = None
        self.bias = None
 
+    '''
+    This remvoes the outliers from the dataset
+    '''
     def clean(self, X, z_score_thresh=2):
         ## remove outliers
         z_score = np.abs(stats.zscore(X))
@@ -19,9 +22,10 @@ class LinearRegression:
         y = X[target_name]
         x = X.drop(columns=[target_name])
         return x,y
-    def scale(self, X):
+    def scale(self, X, target ="PT08.S1(CO)"):
         ## remove target
-
+        if target in X.columns:
+            X = X.drop(columns=[target])
         ## scale
         scaler = StandardScaler()
         x = scaler.fit_transform(X)
