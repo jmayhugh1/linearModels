@@ -27,16 +27,22 @@ class LinearRegression:
         x = scaler.fit_transform(X)
         return x
     
-    def fit_ordinary_least_squares(self, X, y):
+    def fit_ordinary_least_squares_centered(self, X, y):
         '''
-        - Implementation of ordinary least squares
-        - calculates the weights and bias
+        - Implementation of ordinary least squares with centered data
+        - Centers the data to remove the need for a bias term
         '''
-        n_samples, n_features = X.shape
-        X_transpose = X.T   
-        self.weights = np.linalg.inv(X_transpose.dot(X)).dot(X_transpose).dot(y)
-        self.bias = np.mean(y) - np.dot(X, self.weights)
-        print(f"Weights: {self.weights}, Bias: {self.bias}")
+        # Centering the features and target
+        X_centered = X - np.mean(X, axis=0)
+        y_centered = y - np.mean(y)
+        
+        # Apply the ordinary least squares formula
+        X_transpose = X_centered.T
+        self.weights = np.linalg.inv(X_transpose.dot(X_centered)).dot(X_transpose).dot(y_centered)
+        
+        # Save the bias (intercept) based on the mean of y and X
+        self.bias = np.mean(y) - np.dot(np.mean(X, axis=0), self.weights)
+
         
     def fit(self, X, y):
         '''
@@ -72,6 +78,11 @@ class LinearRegression:
     def predict(self, X):
         y_predicted = np.dot(X, self.weights) + self.bias
 
+        return y_predicted
+    
+    
+    def predict_ols(self, X):   
+        y_predicted = np.dot(X, self.weights)
         return y_predicted
     
     def residuals(self, y, y_predicted):
